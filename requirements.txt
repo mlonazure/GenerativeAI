@@ -1,0 +1,4 @@
+azure-core
+openai
+azure-ai-documentintelligence
+python-dotenv

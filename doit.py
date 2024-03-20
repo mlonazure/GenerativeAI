@@ -45,7 +45,9 @@ def analyze_doc(client, doc):
 def retrieve_insights(client, engine, data):
 
     print("\n[START retrieve_insights() using Azure OpenAI]...\n")
-    
+
+    # Modify system and user prompts based on the use case.
+        
     # BASE_PROMPT = f"You are an AI assistant that helps people understand the given table data and extract required information in a pre-defined JSON format with key-value pair."
 
     # USER_PROPMT = f"give me the data points for Financial Year 2020 [Cash and Cash Equivalents, Total Assets, Goodwill & Intangible Assets, Total Assets, Net Worth or Net Equity, Total Liabilities, Debt (Short-term & Long-term), Total Liabilities, Net Income] from the following data contents. If exact data point names are not found, try to use the closest. If no similar data point names at all, then give a value null. Also provide a brief sreport of the financial report including summary of what happened, and potential risks with recommendations. Look for any references of the financial year that is requested. when returning results, format the results such that the financial year is in the top of each result sectiion."

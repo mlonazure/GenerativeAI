@@ -22,9 +22,9 @@ from azure.ai.documentintelligence.models import DocumentAnalysisFeature, Analyz
  
 
 ## Function to call Document Intelligence endpoint to analyze documents
-def analyze_doc(client, doc):
+def CallDocumentIntelligence(client, doc):
 
-    print("[START analyze_docs() using Document Intelligence]...")
+    print("[START Document Intelligence]...")
 
     with open(doc, "rb") as f:
         poller = client.begin_analyze_document(
@@ -33,7 +33,7 @@ def analyze_doc(client, doc):
             analyze_request=f, 
             locale="en-US", 
             # pages="1",
-            features=[DocumentAnalysisFeature.KEY_VALUE_PAIRS],
+            # features=[DocumentAnalysisFeature.KEY_VALUE_PAIRS],
             content_type="application/octet-stream",
         )
 
@@ -42,7 +42,7 @@ def analyze_doc(client, doc):
 
     
 ## Function to call AOAI GPT model to get business insights
-def retrieve_insights(client, engine, data):
+def CallAzureOpenAI(client, engine, data):
 
     print("\n[START retrieve_insights() using Azure OpenAI]...\n")
 
@@ -60,6 +60,7 @@ def retrieve_insights(client, engine, data):
     request_content = "\n==== data contents ====\n" + str(data)
 
     conversation = [{"role":"system", "content": BASE_PROMPT}]
+    # Append the request_content from Document Intelligence (ie the Markdown) to the user prompt.
     conversation.append({"role": "user", "content": USER_PROPMT + request_content})
 
     response = client.chat.completions.create(
@@ -100,8 +101,8 @@ if __name__ == "__main__":
             )
         )
 
-        content = analyze_doc(di_client, path_to_sample_documents)
-        insights = retrieve_insights(aoai_client, chat_engine, content)
+        content = CallDocumentIntelligence(di_client, path_to_sample_documents)
+        insights = CallAzureOpenAI(aoai_client, chat_engine, content)
 
     except HttpResponseError as error:
         print(f"Uh-oh! Seems there was an invalid request: {error}")
